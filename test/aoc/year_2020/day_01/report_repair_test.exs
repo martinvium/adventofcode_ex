@@ -21,7 +21,10 @@ defmodule Aoc.Year2020.Day01.ReportRepairTest do
 
     @tag day: 01, year: 2020
     test "input", %{input: input} do
-      assert input |> ReportRepair.part_2() == input
+      result = input |> ReportRepair.part_2()
+      assert result |> Enum.sum == 2020
+      IO.inspect result
+      IO.puts "=> #{Enum.reduce(result, fn val, sum -> sum * val end)}"
     end
   end
 end
