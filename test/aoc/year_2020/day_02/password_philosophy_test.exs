@@ -15,7 +15,8 @@ defmodule Aoc.Year2020.Day02.PasswordPhilosophyTest do
   describe "part_2/1" do
     @tag day: 02, year: 2020
     test "input", %{input: input} do
-      assert input |> PasswordPhilosophy.part_2() == input
+      result = input |> PasswordPhilosophy.part_2() 
+      IO.inspect result
     end
   end
 end
