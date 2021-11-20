@@ -7,16 +7,16 @@ defmodule Aoc.Year2020.Day02.PasswordPhilosophyTest do
   describe "part_1/1" do
     @tag day: 02, year: 2020
     test "input", %{input: input} do
-      result = input |> PasswordPhilosophy.part_1() 
-      IO.inspect result
+      result = input |> PasswordPhilosophy.part_1()
+      IO.inspect(result)
     end
   end
 
   describe "part_2/1" do
     @tag day: 02, year: 2020
     test "input", %{input: input} do
-      result = input |> PasswordPhilosophy.part_2() 
-      IO.inspect result
+      result = input |> PasswordPhilosophy.part_2()
+      IO.inspect(result)
     end
   end
 end
