@@ -96,7 +96,7 @@ defmodule Aoc.Year2020.Day03.TobogganTrajectory do
   defp debug(row, x) do
     result = if String.at(row, x) == "#", do: "X", else: "0"
     {first, last} = String.split_at(row, x)
-    IO.puts "#{row} -> #{first}#{result}#{String.slice(last, 1..-1)}"
+    IO.puts("#{row} -> #{first}#{result}#{String.slice(last, 1..-1)}")
   end
 
   @doc """
