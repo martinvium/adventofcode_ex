@@ -1,31 +1,31 @@
 defmodule Aoc.Year2021.Day01.SonarSweep do
   @moduledoc """
   ## --- Day 1: Sonar Sweep --- 
-  
+
   You're minding your own business on a ship at sea when the overboard alarm goes
   off! You rush to see if you can help. Apparently, one of the Elves tripped and
   accidentally sent the sleigh keys flying into the ocean! 
-  
+
   Before you know it, you're inside a submarine the Elves keep ready for
   situations like this. It's covered in Christmas lights (because of course it
   is), and it even has an experimental antenna that should be able to track the
   keys if you can boost its signal strength high enough; there's a little meter
   that indicates the antenna's signal strength by displaying 0-50 *stars*. 
-  
+
   Your instincts tell you that in order to save Christmas, you'll need to get all
   *fifty stars* by December 25th. 
-  
+
   Collect stars by solving puzzles. Two puzzles will be made available on each day
   in the Advent calendar; the second puzzle is unlocked when you complete the
   first. Each puzzle grants *one star*. Good luck! 
-  
+
   As the submarine drops below the surface of the ocean, it automatically performs
   a sonar sweep of the nearby sea floor. On a small screen, the sonar sweep report
   (your puzzle input) appears: each line is a measurement of the sea floor depth
   as the sweep looks further and further away from the submarine. 
-  
+
   For example, suppose you had the following report: 
-  
+
   `199
   200
   208
@@ -38,15 +38,15 @@ defmodule Aoc.Year2021.Day01.SonarSweep do
   263
   `This report indicates that, scanning outward from the submarine, the sonar sweep
   found depths of `199`, `200`, `208`, `210`, and so on. 
-  
+
   The first order of business is to figure out how quickly the depth increases,
   just so you know what you're dealing with - you never know if the keys will get
   carried into deeper water by an ocean current or a fish or something. 
-  
+
   To do this, count *the number of times a depth measurement increases* from the
   previous measurement. (There is no measurement before the first measurement.) In
   the example above, the changes are as follows: 
-  
+
   `199 (N/A - no previous measurement)
   200 (*increased*)
   208 (*increased*)
@@ -59,16 +59,16 @@ defmodule Aoc.Year2021.Day01.SonarSweep do
   263 (*increased*)
   `In this example, there are *`7`* measurements that are larger than the previous
   measurement. 
-  
+
   *How many measurements are larger than the previous measurement?*
   ## --- Part Two --- 
-  
+
   Considering every single measurement isn't as useful as you expected: there's
   just too much noise in the data. 
-  
+
   Instead, consider sums of a *three-measurement sliding window*. Again
   considering the above example: 
-  
+
   `199  A      
   200  A B    
   208  A B C  
@@ -84,14 +84,14 @@ defmodule Aoc.Year2021.Day01.SonarSweep do
   is `199 + 200 + 208 = 607`. The second window is marked `B` (`200`, `208`,
   `210`); its sum is `618`. The sum of measurements in the second window is larger
   than the sum of the first, so this first comparison *increased*. 
-  
+
   Your goal now is to count *the number of times the sum of measurements in this
   sliding window increases* from the previous sum. So, compare `A` with `B`, then
   compare `B` with `C`, then `C` with `D`, and so on. Stop when there aren't
   enough measurements left to create a new three-measurement sum. 
-  
+
   In the above example, the sum of each three-measurement window is as follows: 
-  
+
   `A: 607 (N/A - no previous sum)
   B: 618 (*increased*)
   C: 618 (no change)
@@ -101,13 +101,13 @@ defmodule Aoc.Year2021.Day01.SonarSweep do
   G: 769 (*increased*)
   H: 792 (*increased*)
   `In this example, there are *`5`* sums that are larger than the previous sum. 
-  
+
   Consider sums of a three-measurement sliding window. *How many sums are larger
   than the previous sum?* 
-  
- 
-  
-  
+
+
+
+
   """
 
   @doc """
@@ -117,10 +117,10 @@ defmodule Aoc.Year2021.Day01.SonarSweep do
     input
     |> String.split("\n")
     |> Enum.map(&String.to_integer/1)
-    |> Enum.reduce({ 0, nil }, fn next, acc ->
+    |> Enum.reduce({0, nil}, fn next, acc ->
       case acc do
-        { count, previous } when next > previous -> { count + 1, next }
-        { count, _ } -> { count, next }
+        {count, previous} when next > previous -> {count + 1, next}
+        {count, _} -> {count, next}
       end
     end)
     |> elem(0)
@@ -133,15 +133,18 @@ defmodule Aoc.Year2021.Day01.SonarSweep do
     input
     |> String.split("\n")
     |> Enum.map(&String.to_integer/1)
-    |> Enum.reduce({ 0, [] }, fn next, { count, previous_window } ->
+    |> Enum.reduce({0, []}, fn next, {count, previous_window} ->
       next_window = [next | previous_window |> Enum.take(2)]
-      case { previous_window, next_window } do
-        { [_, _, _], [_, _, _]} ->
+
+      case {previous_window, next_window} do
+        {[_, _, _], [_, _, _]} ->
           cond do
-           Enum.sum(next_window) > Enum.sum(previous_window) -> { count + 1, next_window }
-           true -> { count, next_window }
+            Enum.sum(next_window) > Enum.sum(previous_window) -> {count + 1, next_window}
+            true -> {count, next_window}
           end
-        _ -> { count, next_window }
+
+        _ ->
+          {count, next_window}
       end
     end)
     |> elem(0)

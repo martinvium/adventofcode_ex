@@ -372,6 +372,7 @@ defmodule Aoc.Year2018.Day15.BeverageBandits do
   defp game_loop(state) do
     state
     |> print_board()
+
     # |> game_loop()
   end
 
