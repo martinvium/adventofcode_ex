@@ -11,7 +11,7 @@ defmodule Aoc.Year2021.Day01.SonarSweepTest do
 
     @tag day: 01, year: 2021
     test "input", %{input: input} do
-      assert input |> SonarSweep.part_1() == input
+      assert input |> SonarSweep.part_1() == 1226
     end
   end
 
@@ -22,7 +22,7 @@ defmodule Aoc.Year2021.Day01.SonarSweepTest do
 
     @tag day: 01, year: 2021
     test "input", %{input: input} do
-      assert input |> SonarSweep.part_2() == input
+      assert input |> SonarSweep.part_2() == 1252
     end
   end
 end
