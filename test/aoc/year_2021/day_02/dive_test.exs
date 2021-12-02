@@ -7,7 +7,7 @@ defmodule Aoc.Year2021.Day02.DiveTest do
   describe "part_1/1" do
     @tag day: 02, year: 2021
     test "input", %{input: input} do
-      assert input |> Dive.part_1() == 2117664
+      assert input |> Dive.part_1() == 2_117_664
     end
   end
 

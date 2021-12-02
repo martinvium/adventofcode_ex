@@ -47,14 +47,14 @@ defmodule Aoc.Year2021.Day02.Dive do
   def part_1(input) do
     input
     |> String.split("\n")
-    |> Enum.reduce([ 0, 0 ], fn command, [ position, depth ] ->
+    |> Enum.reduce([0, 0], fn command, [position, depth] ->
       [p1, p2] = command |> String.split(" ")
-      amount = p2 |> String.to_integer
+      amount = p2 |> String.to_integer()
 
       case p1 do
-        "forward" -> [ position + amount, depth ]
-        "down" -> [ position, depth + amount ]
-        "up" -> [ position, depth - amount ]
+        "forward" -> [position + amount, depth]
+        "down" -> [position, depth + amount]
+        "up" -> [position, depth - amount]
       end
     end)
     |> Enum.reduce(1, fn v, acc -> acc * v end)
@@ -65,5 +65,18 @@ defmodule Aoc.Year2021.Day02.Dive do
   """
   def part_2(input) do
     input
+    |> String.split("\n")
+    |> Enum.reduce([0, 0, 0], fn command, [aim, position, depth] ->
+      [p1, p2] = command |> String.split(" ")
+      amount = p2 |> String.to_integer()
+
+      case p1 do
+        "forward" -> [aim, position + amount, depth + aim * amount]
+        "down" -> [aim + amount, position, depth]
+        "up" -> [aim - amount, position, depth]
+      end
+    end)
+    |> Enum.take(-2)
+    |> Enum.reduce(1, fn v, acc -> acc * v end)
   end
 end
