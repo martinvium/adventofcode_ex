@@ -46,6 +46,18 @@ defmodule Aoc.Year2021.Day02.Dive do
   """
   def part_1(input) do
     input
+    |> String.split("\n")
+    |> Enum.reduce([ 0, 0 ], fn command, [ position, depth ] ->
+      [p1, p2] = command |> String.split(" ")
+      amount = p2 |> String.to_integer
+
+      case p1 do
+        "forward" -> [ position + amount, depth ]
+        "down" -> [ position, depth + amount ]
+        "up" -> [ position, depth - amount ]
+      end
+    end)
+    |> Enum.reduce(1, fn v, acc -> acc * v end)
   end
 
   @doc """
