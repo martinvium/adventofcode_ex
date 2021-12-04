@@ -12,12 +12,9 @@ defmodule Aoc.Year2021.Day03.BinaryDiagnosticTest do
   end
 
   describe "part_2/1" do
-    test "examples" do
-    end
-
     @tag day: 03, year: 2021
     test "input", %{input: input} do
-      assert input |> BinaryDiagnostic.part_2() == input
+      assert input |> BinaryDiagnostic.part_2() == 1
     end
   end
 end
