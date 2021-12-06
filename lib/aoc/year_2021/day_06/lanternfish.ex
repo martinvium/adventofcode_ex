@@ -73,32 +73,37 @@ defmodule Aoc.Year2021.Day06.Lanternfish do
 
   """
 
-  @doc """
-
-  """
   def part_1(input) do
+    input |> simulate(80)
+  end
+
+  def part_2(input) do
+    input |> simulate(256)
+  end
+
+  defp simulate(input, repeat) do
     input
     |> String.split(",")
     |> Enum.map(&String.to_integer/1)
-    |> step(80)
-  end
-
-  @doc """
-
-  """
-  def part_2(input) do
-    input
+    |> Enum.frequencies()
+    |> step(repeat)
+    |> Map.values()
+    |> Enum.sum()
   end
 
   defp step(population, 0), do: population
+
   defp step(population, repeat) do
     population
-    |> Enum.reduce([], fn fish, acc ->
-      case fish do
-        0 -> [8, 6] ++ acc
-        _ -> [fish - 1 | acc]
+    |> Enum.reduce(%{}, fn {day, amount}, acc ->
+      case day do
+        0 -> Map.merge(acc, %{6 => amount, 8 => amount}, &increment/3)
+        _ -> Map.merge(acc, %{(day - 1) => amount}, &increment/3)
       end
     end)
     |> step(repeat - 1)
   end
+
+  defp increment(_, nil, v2), do: v2
+  defp increment(_, v1, v2), do: v1 + v2
 end
