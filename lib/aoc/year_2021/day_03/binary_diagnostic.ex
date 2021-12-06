@@ -78,13 +78,14 @@ defmodule Aoc.Year2021.Day03.BinaryDiagnostic do
 
   """
   def part_2(input) do
-    rows = input
-           |> String.split("\n")
-           |> Enum.map(&String.graphemes/1)
+    rows =
+      input
+      |> String.split("\n")
+      |> Enum.map(&String.graphemes/1)
 
     0..length(hd(rows))
-    |> Enum.reduce([], fn i, acc ->
-
+    |> Enum.reduce([], fn _i, _acc ->
+      nil
     end)
   end
 end

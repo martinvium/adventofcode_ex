@@ -13,7 +13,6 @@ defmodule Aoc.Year2021.Day04.GiantSquidTest do
 
   describe "part_2/1" do
     test "examples" do
-
     end
 
     @tag day: 04, year: 2021
