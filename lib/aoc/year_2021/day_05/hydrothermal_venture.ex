@@ -61,13 +61,14 @@ defmodule Aoc.Year2021.Day05.HydrothermalVenture do
   def part_1(input) do
     input
     |> prepare_input()
-    |> Enum.flat_map([], fn {{x1, y1}, {x2, y2}}, acc ->
-      cond do
-        x1 == x2 -> [y1..y2 | acc]
-        y1 == y2 -> [x1..x2 | acc]
-        true -> acc
-      end
-    end)
+
+    # |> Enum.flat_map([], fn {{x1, y1}, {x2, y2}}, acc ->
+    #   cond do
+    #     x1 == x2 -> [y1..y2 | acc]
+    #     y1 == y2 -> [x1..x2 | acc]
+    #     true -> acc
+    #   end
+    # end)
   end
 
   def part_1x(input) do
