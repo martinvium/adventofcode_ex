@@ -98,8 +98,7 @@ defmodule Aoc.Year2021.Day04.GiantSquid do
 
     called
     |> Enum.reduce(nil, fn number, acc ->
-
-
+      nil
     end)
   end
 
