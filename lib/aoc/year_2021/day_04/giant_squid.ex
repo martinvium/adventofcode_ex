@@ -97,9 +97,9 @@ defmodule Aoc.Year2021.Day04.GiantSquid do
       end)
 
     called
-    |> Enum.reduce({}, fn _number, _acc ->
-      # put_in(acc, [])
-      boards
+    |> Enum.reduce(nil, fn number, acc ->
+
+
     end)
   end
 
