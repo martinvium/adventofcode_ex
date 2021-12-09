@@ -41,7 +41,6 @@ defmodule Aoc.Year2021.Day09.SmokeBasin do
 
 
   """
-  @width 100
 
   def part_1(input) do
     map = input |> prepare_input()
