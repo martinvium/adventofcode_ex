@@ -81,9 +81,9 @@ defmodule Aoc.Year2021.Day04.GiantSquid do
       input
       |> String.split("\n\n")
 
-    called = a |> String.split(",") |> Enum.map(&String.to_integer/1)
+    numbers = a |> String.split(",") |> Enum.map(&String.to_integer/1)
 
-    _boards =
+    boards =
       b
       |> Enum.map(fn board ->
         board
@@ -96,10 +96,57 @@ defmodule Aoc.Year2021.Day04.GiantSquid do
         end)
       end)
 
-    # called
-    # |> Enum.reduce(nil, fn number, acc ->
-    #   nil
-    # end)
+    { just_called, boards_with_1_winner } = next_number(boards, numbers)
+                         # |> IO.inspect(charlists: :as_list)
+
+    others = boards_with_1_winner
+             |> Enum.reduce(0, fn board, acc ->
+               max = board |> Enum.reduce([], fn row, acc2 ->
+                 [row |> Enum.count(&is_nil/1) | acc2]
+               end)
+               |> Enum.max()
+
+
+               case max do
+                 5 -> 
+                   board |> IO.inspect(charlists: :as_list)
+                   acc + ((board |> List.flatten() |> Enum.reject(&is_nil/1) |> Enum.sum()) * just_called)
+                 _ -> acc
+               end
+             end)
+
+    others
+  end
+
+  def next_number(boards, []) do
+    { 0, boards }
+  end
+
+  def next_number(boards, numbers) do
+    called = hd(numbers)
+
+    new_boards = Enum.map(boards, fn board ->
+      Enum.map(board, fn row ->
+        Enum.map(row, fn num ->
+          cond do
+            num == called -> nil
+            true -> num
+          end
+        end)
+      end)
+    end)
+
+    max = new_boards |> Enum.reduce([], fn board, acc ->
+      board |> Enum.reduce(acc, fn row, acc2 ->
+        [row |> Enum.count(&is_nil/1) | acc2]
+      end)
+    end)
+    |> Enum.max()
+
+    case max do
+      5 -> { called, new_boards }
+      _ -> next_number(new_boards, tl(numbers))
+    end
   end
 
   @doc """
