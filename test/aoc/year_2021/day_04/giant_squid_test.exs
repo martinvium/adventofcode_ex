@@ -7,17 +7,14 @@ defmodule Aoc.Year2021.Day04.GiantSquidTest do
   describe "part_1/1" do
     @tag day: 04, year: 2021
     test "input", %{input: input} do
-      assert input |> GiantSquid.part_1() == 1
+      assert input |> GiantSquid.part_1() == 35711
     end
   end
 
   describe "part_2/1" do
-    test "examples" do
-    end
-
     @tag day: 04, year: 2021
     test "input", %{input: input} do
-      assert input |> GiantSquid.part_2() == input
+      assert input |> GiantSquid.part_2() == 5586
     end
   end
 end

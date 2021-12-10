@@ -77,82 +77,98 @@ defmodule Aoc.Year2021.Day04.GiantSquid do
 
   """
   def part_1(input) do
-    [a | b] =
-      input
-      |> String.split("\n\n")
+    {boards, numbers} = input |> prepare_input()
 
-    numbers = a |> String.split(",") |> Enum.map(&String.to_integer/1)
+    {winner_board, winner_call} =
+      next_number(boards, numbers, [])
+      |> Enum.reverse()
+      |> hd()
 
-    boards =
-      b
-      |> Enum.map(fn board ->
-        board
-        |> String.split("\n")
-        |> Enum.map(fn row ->
-          row
-          |> String.split(" ")
-          |> Enum.reject(fn value -> value == "" end)
-          |> Enum.map(&String.to_integer/1)
-        end)
-      end)
-
-    { just_called, boards_with_1_winner } = next_number(boards, numbers)
-                         # |> IO.inspect(charlists: :as_list)
-
-    others = boards_with_1_winner
-             |> Enum.reduce(0, fn board, acc ->
-               max = board |> Enum.reduce([], fn row, acc2 ->
-                 [row |> Enum.count(&is_nil/1) | acc2]
-               end)
-               |> Enum.max()
-
-
-               case max do
-                 5 -> 
-                   board |> IO.inspect(charlists: :as_list)
-                   acc + ((board |> List.flatten() |> Enum.reject(&is_nil/1) |> Enum.sum()) * just_called)
-                 _ -> acc
-               end
-             end)
-
-    others
+    winner_sum(winner_board) * winner_call
   end
 
-  def next_number(boards, []) do
-    { 0, boards }
+  def part_2(input) do
+    {boards, numbers} = input |> prepare_input()
+
+    {winner_board, winner_call} =
+      next_number(boards, numbers, [])
+      |> hd()
+
+    winner_sum(winner_board) * winner_call
   end
 
-  def next_number(boards, numbers) do
+  defp winner_sum(board) do
+    board
+    |> List.flatten()
+    |> Enum.reject(&is_nil/1)
+    |> Enum.sum()
+  end
+
+  defp next_number(_, [], _), do: raise("no more numbers")
+
+  defp next_number([], _, winners), do: winners
+
+  defp next_number(boards, numbers, winners) do
     called = hd(numbers)
 
-    new_boards = Enum.map(boards, fn board ->
-      Enum.map(board, fn row ->
-        Enum.map(row, fn num ->
-          cond do
-            num == called -> nil
-            true -> num
-          end
-        end)
-      end)
-    end)
+    {new_boards, winners} =
+      boards
+      |> Enum.reduce({[], winners}, fn board, {acc_boards, acc_winners} ->
+        new_board = board |> mark_called_numbers(called)
 
-    max = new_boards |> Enum.reduce([], fn board, acc ->
-      board |> Enum.reduce(acc, fn row, acc2 ->
-        [row |> Enum.count(&is_nil/1) | acc2]
+        case max_count(new_board) == 5 do
+          true -> {acc_boards, [{new_board, called} | acc_winners]}
+          false -> {[new_board | acc_boards], acc_winners}
+        end
       end)
-    end)
-    |> Enum.max()
 
-    case max do
-      5 -> { called, new_boards }
-      _ -> next_number(new_boards, tl(numbers))
-    end
+    next_number(new_boards |> Enum.reverse(), tl(numbers), winners)
   end
 
-  @doc """
+  defp max_count(board) do
+    (horizontal_counts(board) ++ vertical_counts(board)) |> Enum.max()
+  end
 
-  """
-  def part_2(input) do
-    input
+  defp horizontal_counts(board) do
+    board |> Enum.map(fn row -> row |> Enum.count(&is_nil/1) end)
+  end
+
+  defp vertical_counts(board) do
+    board
+    |> Enum.zip()
+    |> Enum.map(&Tuple.to_list/1)
+    |> Enum.map(fn row -> row |> Enum.count(&is_nil/1) end)
+  end
+
+  defp mark_called_numbers(board, called) do
+    Enum.map(board, fn row ->
+      Enum.map(row, fn num ->
+        case num == called do
+          true -> nil
+          false -> num
+        end
+      end)
+    end)
+  end
+
+  defp prepare_input(input) do
+    [a | b] = input |> String.split("\n\n")
+    numbers = a |> String.split(",") |> Enum.map(&String.to_integer/1)
+    boards = prepare_boards(b)
+    {boards, numbers}
+  end
+
+  defp prepare_boards(b) do
+    b
+    |> Enum.map(fn board ->
+      board
+      |> String.split("\n")
+      |> Enum.map(fn row ->
+        row
+        |> String.split(" ")
+        |> Enum.reject(fn value -> value == "" end)
+        |> Enum.map(&String.to_integer/1)
+      end)
+    end)
   end
 end
