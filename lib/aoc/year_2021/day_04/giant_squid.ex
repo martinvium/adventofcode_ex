@@ -83,7 +83,7 @@ defmodule Aoc.Year2021.Day04.GiantSquid do
 
     called = a |> String.split(",") |> Enum.map(&String.to_integer/1)
 
-    boards =
+    _boards =
       b
       |> Enum.map(fn board ->
         board
@@ -96,10 +96,10 @@ defmodule Aoc.Year2021.Day04.GiantSquid do
         end)
       end)
 
-    called
-    |> Enum.reduce(nil, fn number, acc ->
-      nil
-    end)
+    # called
+    # |> Enum.reduce(nil, fn number, acc ->
+    #   nil
+    # end)
   end
 
   @doc """
