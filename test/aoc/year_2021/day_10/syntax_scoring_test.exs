@@ -14,7 +14,7 @@ defmodule Aoc.Year2021.Day10.SyntaxScoringTest do
   describe "part_2/1" do
     @tag day: 10, year: 2021
     test "input", %{input: input} do
-      assert input |> SyntaxScoring.part_2() == input
+      assert input |> SyntaxScoring.part_2() == 2_801_302_861
     end
   end
 end

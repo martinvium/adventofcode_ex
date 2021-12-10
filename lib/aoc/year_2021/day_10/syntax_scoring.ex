@@ -139,6 +139,13 @@ defmodule Aoc.Year2021.Day10.SyntaxScoring do
     ">" => 25137
   }
 
+  @part_2_scores %{
+    ")" => 1,
+    "]" => 2,
+    "}" => 3,
+    ">" => 4
+  }
+
   def part_1(input) do
     input
     |> String.split("\n")
@@ -151,7 +158,24 @@ defmodule Aoc.Year2021.Day10.SyntaxScoring do
   end
 
   def part_2(input) do
-    input
+    scores =
+      input
+      |> String.split("\n")
+      |> Enum.map(&String.graphemes/1)
+      |> Enum.reduce([], fn line, acc -> [parse(line, []) | acc] end)
+      |> Enum.reverse()
+      |> Enum.filter(fn {invalid, _} -> is_nil(invalid) end)
+      |> Enum.map(fn {_, opened} -> opened end)
+      |> Enum.map(&to_score/1)
+
+    scores |> Enum.sort() |> Enum.at(floor(length(scores) / 2))
+  end
+
+  defp to_score(opened) do
+    opened
+    |> Enum.reduce(0, fn char, acc ->
+      acc * 5 + @part_2_scores[@pairs[char]]
+    end)
   end
 
   defp parse([], opened) do
